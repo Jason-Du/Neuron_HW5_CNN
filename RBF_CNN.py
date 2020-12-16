@@ -106,11 +106,12 @@ class RBFLayer(Layer):
 
 def RBF():
     model = Sequential()
-    model.add(Conv2D(filters=6,input_dim=(28*28),activation='sigmoid',padding="valid",strides=(1, 1),kernel_size=(5,5)))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(RBFLayer(10, 0.5))
+    model.add(Dense(128, input_dim=(28*28), activation='relu'))
+    # model.add(Conv2D(filters=6,input_dim=(28*28),activation='sigmoid',padding="valid",strides=(1, 1),kernel_size=(5,5)))
+    # model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(RBFLayer(64, 0.5))
     # model.add(Dropout(0.2))
-    # model.add(Dense(10, activation='softmax'))
+    model.add(Dense(10, activation='softmax'))
     model.summary()
     # 保存模型
     model.save('RBF.h5')
@@ -137,7 +138,7 @@ def RBF_CNN():
     # model.add(Conv2D(filters=12,activation='relu',padding="valid",strides=(1, 1),kernel_size=(5,5),data_format='channels_last'))
     # model.add(MaxPooling2D(pool_size=(2, 2),strides=(2, 2),padding="valid"))
     model.add(Flatten())
-    # model.add(RBFLayer(128, 0.5))
+    model.add(RBFLayer(128, 0.5))
     # model.add(Dropout(0.2))
     model.add(Dense(10, activation='softmax'))
     model.summary()
@@ -170,12 +171,12 @@ if __name__ == "__main__":
     # os.system('pause')
     # model_name='NN_mnist_weight'
     # model_name='NN'
-    model_name='RBF_CNN'
+    model_name='RBF'
     if model_name=='RBF_CNN':
         # print(Trainx.shape)
         # os.system('pause')
         model = RBF_CNN()
-        model.compile(optimizer=Adam(lr=0.00005, beta_1=0.9, beta_2=0.999, epsilon=1e-08),loss='categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer=Adam(lr=0.005, beta_1=0.9, beta_2=0.999, epsilon=1e-08),loss='categorical_crossentropy', metrics=['accuracy'])
         History = model.fit(Trainx, Trainy, batch_size=300, epochs=60, verbose=2,validation_data=(Testx,Testy))
         pre = model.evaluate(Testx, Testy, batch_size=300, verbose=2)
         print('test_loss:', pre[0], '- test_acc:', pre[1])
@@ -229,7 +230,7 @@ if __name__ == "__main__":
         # print(Trainx.shape)
         # os.system('pause')
         model = RBF()
-        model.compile(optimizer=Adam(lr=0.00025, beta_1=0.9, beta_2=0.999, epsilon=1e-08),loss='categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer=Adam(lr=0.005, beta_1=0.9, beta_2=0.999, epsilon=1e-08),loss='categorical_crossentropy', metrics=['accuracy'])
         History = model.fit(Trainx, Trainy, batch_size=300, epochs=40, verbose=2,validation_data=(Testx,Testy))
         pre = model.evaluate(Testx, Testy, batch_size=100, verbose=2)
         print('test_loss:', pre[0], '- test_acc:', pre[1])
@@ -264,7 +265,7 @@ if __name__ == "__main__":
         # print(Trainx.shape)
         # os.system('pause')
         model = NN()
-        model.compile(optimizer=Adam(lr=0.0005, beta_1=0.9, beta_2=0.999, epsilon=1e-08),loss='categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer=Adam(lr=0.05, beta_1=0.9, beta_2=0.999, epsilon=1e-08),loss='categorical_crossentropy', metrics=['accuracy'])
         History = model.fit(Trainx, Trainy, batch_size=300, epochs=20, verbose=2,validation_data=(Testx,Testy),callbacks=[checkpoint])
         pre = model.evaluate(Testx, Testy, batch_size=100, verbose=2)
         print('test_loss:', pre[0], '- test_acc:', pre[1])
